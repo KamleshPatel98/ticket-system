@@ -52,4 +52,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(Ticket::class);
     }
+
+    const ROLE_ADMIN = 'admin';
+    const ROLE_AGENT = 'agent';
+    const ROLE_CUSTOMER = 'customer';
 }
