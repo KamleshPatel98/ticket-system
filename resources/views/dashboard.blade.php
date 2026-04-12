@@ -14,4 +14,8 @@
             </div>
         </div>
     </div>
+
+    @can('assign-ticket')
+        <button>Assign Ticket</button>
+    @endcan
 </x-app-layout>
