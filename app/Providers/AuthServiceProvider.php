@@ -25,7 +25,7 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         Gate::define('view-all-tickets', function ($user) {
-            return in_array($user->role, ['admin']);
+            return in_array($user->role, ['admin','agent']);
         });
     }
 }
