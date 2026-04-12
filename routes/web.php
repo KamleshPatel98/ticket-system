@@ -30,8 +30,8 @@ Route::middleware('auth')->group(function () {
         });
     });
 
-    // Customer
-    Route::middleware('role:customer')->group(function () {
+    // Admin + Customer
+    Route::middleware('role:admin,customer')->group(function () {
         Route::get('/my-tickets', function () {
             return "My Tickets";
         });
