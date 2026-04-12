@@ -56,4 +56,14 @@ class User extends Authenticatable
     const ROLE_ADMIN = 'admin';
     const ROLE_AGENT = 'agent';
     const ROLE_CUSTOMER = 'customer';
+
+    public function isAdmin() 
+    {
+        return $this->role === self::ROLE_ADMIN;
+    }
+
+    public function isAgent() 
+    {
+        return $this->role === self::ROLE_AGENT;
+    }
 }

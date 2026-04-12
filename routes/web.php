@@ -20,7 +20,7 @@ Route::middleware('auth')->group(function () {
     Route::middleware('role:admin')->group(function () {
         Route::get('/admin', function () {
             return "Admin Panel";
-        });
+        })->name('admin');
     });
 
     // Admin + Agent
