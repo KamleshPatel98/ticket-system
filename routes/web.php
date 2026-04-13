@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TicketController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -21,6 +22,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/admin', function () {
             return "Admin Panel";
         })->name('admin');
+
+        Route::resource('tickets', TicketController::class);
     });
 
     // Admin + Agent
