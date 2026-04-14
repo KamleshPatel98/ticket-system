@@ -21,7 +21,11 @@ class TicketController extends Controller
      */
     public function index()
     {
-        $records = Ticket::paginate(10);
+        $records = Ticket::select('id','user_id','subject','description','priority','status','assigned_to')
+            ->with(['user:id,name,email', 'assignedAgent:id,name,email'])
+            ->withCount('comments')
+            ->latest()
+            ->paginate(10);
         return view('tickets.index', compact('records'));
     }
 

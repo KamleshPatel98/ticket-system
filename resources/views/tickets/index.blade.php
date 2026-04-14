@@ -15,11 +15,14 @@
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
-                <tr>
+                <tr>`
                     <th>SN.</th>
+                    <th>User</th>
                     <th>Subject</th>
                     <th>Description</th>
                     <th>Priority</th>
+                    <th>Assign Agent</th>
+                    <th>Comments</th>
                     <th>Status</th>
                     <th class="text-center">Action</th>
                 </tr>
@@ -28,9 +31,18 @@
                 @foreach ($records as $row)
                 <tr>
                     <td>{{ $loop->iteration }}</td>
+                    <td>
+                        {{ $row->user->name ?? '' }} <br>
+                        {{ $row->user->email ?? '' }}
+                    </td>
                     <td>{{ $row->subject }}</td>
                     <td>{{ $row->description }}</td>
                     <td>{{ $row->priority }}</td>
+                    <td>
+                        {{ $row->assignedAgent->name ?? ''}} <br>
+                        {{ $row->assignedAgent->email ?? '' }}
+                    </td>
+                    <td>{{ $row->comments_count }}</td>
                     <td>{{ $row->status }}</td>
                     <td class="d-flex justify-content-center gap-2 align-items-center">
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal{{ $row->id }}">
