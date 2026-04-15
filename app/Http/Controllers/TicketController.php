@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\TicketHelper;
 use App\Services\TicketService;
 use App\Http\Requests\TicketRequest;
+use App\Http\Resources\TicketResource;
 use App\Models\Ticket;
 use Illuminate\Support\Facades\Auth;
 
@@ -21,11 +23,17 @@ class TicketController extends Controller
      */
     public function index()
     {
-        $records = Ticket::select('id','user_id','subject','description','priority','status','assigned_to')
+        $tickets = Ticket::select('id','user_id','subject','description','priority','status','assigned_to')
             ->with(['user:id,name,email', 'assignedAgent:id,name,email'])
             ->withCount('comments')
             ->latest()
-            ->paginate(10);
+            ->paginate(1);
+        // $records = TicketResource::collection($tickets); //resource for api
+
+        $records = $tickets->through(function ($ticket) {
+            return TicketHelper::format($ticket); //helper for web
+        });
+
         return view('tickets.index', compact('records'));
     }
 

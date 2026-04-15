@@ -32,24 +32,24 @@
                 <tr>
                     <td>{{ $loop->iteration }}</td>
                     <td>
-                        {{ $row->user->name ?? '' }} <br>
-                        {{ $row->user->email ?? '' }}
+                        {{ $row['user_name'] }} <br>
+                        {{ $row['user_email'] }}
                     </td>
-                    <td>{{ $row->subject }}</td>
-                    <td>{{ $row->description }}</td>
-                    <td>{{ $row->priority }}</td>
+                    <td>{{ $row['subject'] }}</td>
+                    <td>{{ $row['description'] }}</td>
+                    <td>{{ ucfirst($row['priority']) }}</td>
                     <td>
-                        {{ $row->assignedAgent->name ?? ''}} <br>
-                        {{ $row->assignedAgent->email ?? '' }}
+                        {{ $row['assigned_agent_name']}} <br>
+                        {{ $row['assigned_agent_email'] }}
                     </td>
-                    <td>{{ $row->comments_count }}</td>
-                    <td>{{ $row->status }}</td>
+                    <td>{{ $row['comments_count'] }}</td>
+                    <td>{{ ucfirst($row['status']) }}</td>
                     <td class="d-flex justify-content-center gap-2 align-items-center">
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal{{ $row->id }}">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal{{ $row['id'] }}">
                             Edit
                         </button>
 
-                        <form action="{{ route('tickets.destroy', $row->id) }}" method="POST">
+                        <form action="{{ route('tickets.destroy', $row['id']) }}" method="POST">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger">Delete</button>
@@ -118,27 +118,27 @@
 
     @foreach ($records as $ticket)
     <!-- Update Modal -->
-    <div class="modal fade" id="editModal{{ $ticket->id }}" tabindex="-1" aria-labelledby="editModalLabel{{ $ticket->id }}" aria-hidden="true">
+    <div class="modal fade" id="editModal{{ $ticket['id'] }}" tabindex="-1" aria-labelledby="editModalLabel{{ $ticket['id'] }}" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form action="{{ route('tickets.update', $ticket->id) }}" method="POST">
+                <form action="{{ route('tickets.update', $ticket['id']) }}" method="POST">
                 @csrf
                 @method('PUT')
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="editModalLabel{{ $ticket->id }}">Modal title</h1>
+                        <h1 class="modal-title fs-5" id="editModalLabel{{ $ticket['id'] }}">Modal title</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <!-- Subject -->
                         <div>
                             <label for="subject">Subject</label>
-                            <input type="text" class="form-control" name="subject" id="subject" value="{{ $ticket->subject }}" maxlength="255" required>
+                            <input type="text" class="form-control" name="subject" id="subject" value="{{ $ticket['subject'] }}" maxlength="255" required>
                         </div>
 
                         <!-- Description -->
                         <div class="mt-3">
                             <label for="description">Description</label>
-                            <textarea class="form-control" name="description" id="description" required>{{ $ticket->description }}</textarea>
+                            <textarea class="form-control" name="description" id="description" required>{{ $ticket['description'] }}</textarea>
                         </div>
 
                         <!-- Priority -->
@@ -146,9 +146,9 @@
                             <label for="priority">Priority</label>
                             <select class="form-select" name="priority" id="priority" required>
                                 <option value="">Select Priority</option>
-                                <option value="low" @selected($ticket->priority == "low")>Low</option>
-                                <option value="medium" @selected($ticket->priority == "medium")>Medium</option>
-                                <option value="high" @selected($ticket->priority == "high")>High</option>
+                                <option value="low" @selected($ticket['priority'] == "low")>Low</option>
+                                <option value="medium" @selected($ticket['priority'] == "medium")>Medium</option>
+                                <option value="high" @selected($ticket['priority'] == "high")>High</option>
                             </select>
                         </div>
 
@@ -157,9 +157,9 @@
                             <label for="status">Status</label>
                             <select class="form-select" name="status" id="status" required>
                                 <option value="">Select Status</option>
-                                <option value="open" @selected($ticket->status == "open")>Open</option>
-                                <option value="in_progress" @selected($ticket->status == "in_progress")>In Progress</option>
-                                <option value="closed" @selected($ticket->status == "closed")>Closed</option>
+                                <option value="open" @selected($ticket['status'] == "open")>Open</option>
+                                <option value="in_progress" @selected($ticket['status'] == "in_progress")>In Progress</option>
+                                <option value="closed" @selected($ticket['status'] == "closed")>Closed</option>
                             </select>
                         </div>
                     </div>
