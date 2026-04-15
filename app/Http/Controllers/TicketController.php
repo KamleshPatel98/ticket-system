@@ -8,6 +8,7 @@ use App\Http\Requests\TicketRequest;
 use App\Http\Resources\TicketResource;
 use App\Models\Ticket;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 class TicketController extends Controller
 {
@@ -21,11 +22,19 @@ class TicketController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $tickets = Ticket::select('id','user_id','subject','description','priority','status','assigned_to')
             ->with(['user:id,name,email', 'assignedAgent:id,name,email'])
             ->withCount('comments')
+
+            ->when($request->status, fn($q) => $q->status($request->status))
+            ->when($request->priority, fn($q) => $q->priority($request->priority))
+            ->when($request->search, function ($q) use ($request) {
+                $q->where('subject', 'like', "%{$request->search}%");
+            })
+            ->when($request->date, fn($q) => $q->whereDate('created_at', $request->date))
+
             ->latest()
             ->paginate(1);
         // $records = TicketResource::collection($tickets); //resource for api

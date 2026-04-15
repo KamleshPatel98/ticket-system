@@ -12,6 +12,37 @@
         </div>
     </x-slot>
 
+    <form method="GET">
+        <div class="row mt-3">
+            <div class="col-md-4">
+                <input type="text" class="form-control" name="search" placeholder="Search subject"
+                    value="{{ request('search') }}">
+            </div>
+            <div class="col-md-2">
+                <select class="form-select" name="status">
+                    <option value="">All Status</option>
+                    <option value="open" {{ request('status')=='open' ? 'selected' : '' }}>Open</option>
+                    <option value="in_progress" {{ request('status')=='in_progress' ? 'selected' : '' }}>In Progress</option>
+                    <option value="closed" {{ request('status')=='closed' ? 'selected' : '' }}>Closed</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <select class="form-select" name="priority">
+                    <option value="">All Priority</option>
+                    <option value="low" {{ request('priority')=='low' ? 'selected' : '' }}>Low</option>
+                    <option value="medium" {{ request('priority')=='medium' ? 'selected' : '' }}>Medium</option>
+                    <option value="high" {{ request('priority')=='high' ? 'selected' : '' }}>High</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <input type="date" class="form-control" name="date" value="{{ request('date') }}">
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary">Filter</button>
+            </div>
+        </div>
+    </form>
+
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
@@ -59,7 +90,7 @@
                 @endforeach
             </tbody>
         </table>
-        {{ $records->links('pagination::bootstrap-5') }}
+        {{ $records->appends(request()->query())->links('pagination::bootstrap-5') }}
     </div>
 
     <!-- Add Modal -->

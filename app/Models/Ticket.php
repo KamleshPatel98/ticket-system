@@ -29,4 +29,14 @@ class Ticket extends Model
     {
         return $this->hasMany(TicketComment::class, 'ticket_id');
     }
+
+    public function scopeStatus($query, $status)
+    {
+        return $query->where('status', $status);
+    }
+
+    public function scopePriority($query, $priority)
+    {
+        return $query->where('priority', $priority);
+    }
 }
