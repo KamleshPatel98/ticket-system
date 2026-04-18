@@ -90,6 +90,9 @@ class TicketController extends Controller
      */
     public function update(TicketRequest $request, Ticket $ticket)
     {
+        if ($ticket->user_id !== Auth::id() && Auth::user()->role !== 'admin') {
+            abort(403);
+        }
         $this->ticketService->update($ticket, $request->validated());
         return back()->with('success', 'Updated');
     }
@@ -99,6 +102,9 @@ class TicketController extends Controller
      */
     public function destroy(Ticket $ticket)
     {
+        if ($ticket->user_id !== Auth::id() && Auth::user()->role !== 'admin') {
+            abort(403);
+        }
         $this->ticketService->delete($ticket);
         return back()->with('success', 'Deleted');
     }
