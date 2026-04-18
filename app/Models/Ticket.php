@@ -49,4 +49,29 @@ class Ticket extends Model
         } 
         return $query->where('user_id', $user->id);
     }
+
+    public static function allowedTransitions()
+    {
+        return [
+            'open' => ['in_progress'],
+            'in_progress' => ['closed'],
+            'closed' => [], // final state
+        ];
+    }
+
+    public function canChangeStatus($newStatus)
+    {
+        $allowed = self::allowedTransitions();
+        return in_array($newStatus, $allowed[$this->status] ?? []);
+    }
+
+    public function updateStatus($newStatus)
+    {
+        if (!$this->canChangeStatus($newStatus)) {
+            return false;
+        }
+
+        $this->status = $newStatus;
+        return $this->save();
+    }
 }

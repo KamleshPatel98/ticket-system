@@ -93,7 +93,14 @@ class TicketController extends Controller
         if ($ticket->user_id !== Auth::id() && Auth::user()->role !== 'admin') {
             abort(403);
         }
-        $this->ticketService->update($ticket, $request->validated());
+
+        if (!$ticket->updateStatus($request->status)) {
+            return back()->with('error', 'Invalid status transition');
+        }
+
+        $validated = $request->validated();
+        unset($validated['status']);
+        $this->ticketService->update($ticket, $validated);
         return back()->with('success', 'Updated');
     }
 
