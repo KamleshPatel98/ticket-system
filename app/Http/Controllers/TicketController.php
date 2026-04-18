@@ -28,6 +28,8 @@ class TicketController extends Controller
             ->with(['user:id,name,email', 'assignedAgent:id,name,email'])
             ->withCount('comments')
 
+            ->roleAccess(Auth::user())
+
             ->when($request->status, fn($q) => $q->status($request->status))
             ->when($request->priority, fn($q) => $q->priority($request->priority))
             ->when($request->search, function ($q) use ($request) {

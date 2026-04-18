@@ -39,4 +39,14 @@ class Ticket extends Model
     {
         return $query->where('priority', $priority);
     }
+
+    public function scopeRoleAccess($query, $user)
+    {
+        if ($user->isAdmin()) {
+            return $query;
+        } else if ($user->isAgent()) {
+            return $query->where('assigned_to', $user->id);
+        } 
+        return $query->where('user_id', $user->id);
+    }
 }

@@ -22,8 +22,6 @@ Route::middleware('auth')->group(function () {
         Route::get('/admin', function () {
             return "Admin Panel";
         })->name('admin');
-
-        Route::resource('tickets', TicketController::class);
     });
 
     // Admin + Agent
@@ -31,6 +29,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/manage-tickets', function () {
             return "Manage Tickets";
         });
+
+        Route::resource('tickets', TicketController::class);
     });
 
     // Admin + Customer
